@@ -32,7 +32,7 @@
             
                 $db = Yii::$app->db;
                 
-                $command = $db->createCommand('SELECT * FROM polls WHERE poll_name=:pollName')->
+                $command = $db->createCommand('SELECT * FROM poll WHERE poll_name=:pollName')->
                 bindParam(':pollName',$this->pollName);
                 
                 $this->pollData = $command->queryOne();
@@ -44,7 +44,7 @@
             
                 $db = Yii::$app->db;
                 
-                $c = $db->createCommand()->insert('polls', [
+                $c = $db->createCommand()->insert('poll', [
                     'poll_name' => $this->pollName,
                     'answer_options' => $this->answerOptionsData
                 ])->execute();
