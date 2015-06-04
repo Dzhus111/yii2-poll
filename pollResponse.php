@@ -2,7 +2,7 @@
     namespace pollext\poll;
     use yii\base\Model;
     
-    class VoicesOfPoll extends Model{
+    class PollResponse extends Model{
     public $voice;
     public $type;
     

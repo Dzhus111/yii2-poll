@@ -32,7 +32,7 @@
             
                 $db = Yii::$app->db;
                 
-                $command = $db->createCommand('SELECT * FROM polls WHERE poll_name=:pollName')->
+                $command = $db->createCommand('SELECT * FROM poll WHERE poll_name=:pollName')->
                 bindParam(':pollName',$this->pollName);
                 
                 $this->pollData = $command->queryOne();
@@ -44,7 +44,7 @@
             
                 $db = Yii::$app->db;
                 
-                $c = $db->createCommand()->insert('polls', [
+                $c = $db->createCommand()->insert('poll', [
                     'poll_name' => $this->pollName,
                     'answer_options' => $this->answerOptionsData
                 ])->execute();
@@ -77,9 +77,9 @@
                 $pollDB->setVoicesData($this->pollName, $this->answerOptions);
             }
             if(Yii::$app->request->isAjax){
-                if(isset($_POST['VoicesOfPoll'])){
+                if(isset($_POST['PollResponse'])){
                     if($_POST['poll_name']==$this->pollName){
-                       $pollDB->updateAnswers($this->pollName, $_POST['VoicesOfPoll']['voice'], 
+                       $pollDB->updateAnswers($this->pollName, $_POST['PollResponse']['voice'], 
                         $this->answerOptions);
                         $pollDB->updateUsers($this->pollName);
                     }    
@@ -97,15 +97,15 @@
         
         public function run()
         {   
-            $model = new VoicesOfPoll;
+            $model = new PollResponse;
             return  $this->render('index', [
-                'pollData'=> $this->pollData,
+                'answers'     => $this->answerOptions,
                 'answersData' => $this->answers,
-                'params' => $this->params,
-                'model' => $model,
-                'answers' => $this->answerOptions,
+                'isVote'      => $this->isVote,
+                'model'       => $model,
+                'params'      => $this->params,
+                'pollData'    => $this->pollData,
                 'sumOfVoices' => $this->sumOfVoices,
-                'isVote' => $this->isVote,
             ]);
             
         }

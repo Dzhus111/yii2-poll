@@ -1,7 +1,7 @@
 # yii2-poll
 Poll widget for yii2
 
-The Poll widget for the Yii2 framework allows you to create custom polls for authenticated users to vote on.
+The Poll widget for the Yii2 framework allows you to create custom poll for authenticated users to vote on.
 
 Installing 
 
@@ -57,6 +57,6 @@ That's all. You will see poll with standard parameters. But you can set your par
                 ]
             ]); 
     
-So, now you can fast and easy create the polls
+So, now you can fast and easy create the poll
 
 If you want to change the styles for the poll form, you can do it directly in the view file of poll widget in apps\basic\vendor\yiisoft\yii2-poll\views\index.php
