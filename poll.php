@@ -10,10 +10,10 @@ use yii\helpers\Html;
 class Poll extends Widget {
 
     private $answerOptionsData;
-    private $pollData;
-    private $pollId       = null;
-    private $pollName     = null;
-    private $usersIPs     = array();
+    private $pollData = null;
+    private $pollId   = null;
+    private $pollName = null;
+    private $usersIPs = array();
 
     public $answerOptions = array();
     public $answers       = array();

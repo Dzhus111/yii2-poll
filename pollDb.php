@@ -149,9 +149,6 @@ class PollDb {
             PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
             )->execute();
-
-        // return the poll ID
-        
     }
 
     public function isTableExists()

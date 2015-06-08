@@ -93,8 +93,8 @@ use yii\widgets\ActiveForm;
             && Yii::$app->user->getId() != null
     )) {
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
-        echo Html::textInput('poll_id', $pollData['id']);
-        echo Html::textInput('poll_name', $pollData['poll_name']);
+        echo Html::hiddenInput('poll_id', $pollData['id']);
+        //echo Html::hiddenInput('poll_name', $pollData['poll_name']);
         echo Html::activeRadioList($model,'voice',$answers);
         AjaxSubmitButton::begin([
             'label'         => 'Vote',
