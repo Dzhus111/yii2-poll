@@ -1,8 +1,8 @@
 <?php
-    use yii\helpers\Html;
-    use yii\widgets\ActiveForm;
-    use pollext\poll\AjaxSubmitButton;
-    use yii\helpers\Url;
+use pollext\poll\AjaxSubmitButton;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 ?>
 
 <style>
@@ -65,14 +65,16 @@
     .support_forms{
         margin-top: 0;
     }
-    
 </style>
-<div class="poll" style="width:<?php echo $params['maxLineWidth']+55;?>px;" >
-<?php  echo "<div style=\"max-width:".$params['maxLineWidth']."px; word-wrap: break-word; margin-bottom: 10px; font-size:12pt; font-weight:bold;\">".$pollData['poll_name']."</div>";?>
 
-<?php if((Yii::$app->user->getId()==null && $_POST['pollStatus']!='show' && $isVote == false ) || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='vote'&& $_POST['pollStatus']!='show' && Yii::$app->user->getId()==null)){
-    echo "Sign in to vote";
-}?>
+<div class="poll" style="width:<?php echo $params['maxLineWidth']+55;?>px;" >
+    <?php  echo "<div style=\"max-width:".$params['maxLineWidth']."px; word-wrap: break-word; margin-bottom: 10px; font-size:12pt; font-weight:bold;\">".$pollData['poll_name']."</div>";?>
+
+    <?php if((Yii::$app->user->getId()==null && $_POST['pollStatus']!='show' && $isVote == false ) || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='vote'&& $_POST['pollStatus']!='show' && Yii::$app->user->getId()==null)){
+        
+        echo "Sign in to vote";
+    }?>
+
     <?php if(($isVote == false && Yii::$app->user->getId()!=null && $_POST['pollStatus']!='show') || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='vote'&& $_POST['pollStatus']!='show' && Yii::$app->user->getId()!=null)){?>
             
                 <?php echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']); ?>
@@ -96,27 +98,26 @@
                
                 <?php echo Html::endForm(); 
             }
-       
     ?>
+
     <?php if(($isVote == false && $_POST['pollStatus']!='show') || (Yii::$app->user->getId()==null && $_POST['pollStatus']!='show') || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='vote'&& $_POST['pollStatus']!='show')){?>
-   <form method="POST" action="" class="support_forms">
-   <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
-   <input type="hidden" name="pollStatus" value="show"/>
-     <?php AjaxSubmitButton::begin([
-                    'label' => 'Show results',
-                    'ajaxOptions' => [
-                        'type'=>'POST',
-                        'url'=>'#',
-                        'success' => new \yii\web\JsExpression('function(data){
-                            $("body").html(data);
-                            }'),
-                    ],
-                    'options' => ['class' => 'customclass', 'type' => 'submit'],
-                    ]);
-                    AjaxSubmitButton::end();
-                ?>
-   </form>
+        <form method="POST" action="" class="support_forms">
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
+        <input type="hidden" name="pollStatus" value="show"/>
+         <?php AjaxSubmitButton::begin([
+            'label'         => 'Show results',
+            'ajaxOptions'   => [
+                'success' => new \yii\web\JsExpression('function(data){$("body").html(data);}'),
+                'type'    => 'POST',
+                'url'     => '#',
+            ],
+            'options'       => ['class' => 'customclass', 'type' => 'submit'],
+            ]);
+            AjaxSubmitButton::end();
+        ?>
+        </form>
     <?php }?>
+
     <?php if($isVote == true || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='show') ){?> 
         <?php 
             for($i = 0; $i<count($answersData); $i++){ 
@@ -142,24 +143,24 @@
             </div>
         <?php }?>
     <?php }?>
+
     <?php if ($isVote == false && $_POST['pollStatus']=='show'){?>
-    <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
-   <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
-   <input type="hidden" name="pollStatus" value="vote"/>
-     <?php AjaxSubmitButton::begin([
-                    'label' => 'Vote',
-                    'ajaxOptions' => [
-                        'type'=>'POST',
-                        'url'=>'#',
-                        'success' => new \yii\web\JsExpression('function(data){
-                            $("body").html(data);
-                            }'),
-                    ],
-                    'options' => ['class' => 'customclass', 'type' => 'submit'],
-                    ]);
-                    AjaxSubmitButton::end();
-                ?>
-     <?php }?>
+        <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
+        <input type="hidden" name="pollStatus" value="vote"/>
+        <?php AjaxSubmitButton::begin([
+            'label'         => 'Vote',
+            'ajaxOptions'   => [
+                'success' => new \yii\web\JsExpression('function(data){$("body").html(data);}'),
+                'type'    => 'POST',
+                'url'     => '#',
+            ],
+            'options'       => ['class' => 'customclass', 'type' => 'submit'],
+            ]);
+            AjaxSubmitButton::end();
+        ?>
+    <?php }?>
+
    </form>
 </div>
 
