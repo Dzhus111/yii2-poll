@@ -75,16 +75,20 @@ class Poll extends Widget {
         
         $pollDB = new PollDb;
         $this->isExist = $pollDB->isTableExists();
+
         if(count($this->isExist)==0){
             $pollDB->createTables();
         }
+
         if($this->answerOptions != null){
             $this->answerOptionsData = serialize($this->answerOptions);
         }
+
         if(!$pollDB->isPollExist($this->pollName)){
             $this->setDbData();
             $pollDB->setVoicesData($this->pollName, $this->answerOptions);
         }
+
         if(Yii::$app->request->isAjax){
             if(isset($_POST['PollResponse'])){
                 if($_POST['poll_name']==$this->pollName){

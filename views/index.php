@@ -75,30 +75,37 @@ use yii\widgets\ActiveForm;
         echo "Sign in to vote";
     }?>
 
-    <?php if(($isVote == false && Yii::$app->user->getId()!=null && $_POST['pollStatus']!='show') || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='vote'&& $_POST['pollStatus']!='show' && Yii::$app->user->getId()!=null)){?>
-            
-                <?php echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']); ?>
-                
-                <?php echo Html::activeRadioList($model,'voice',$answers); ?>
-                <input type="hidden" name="poll_name" value="<?=$pollData['poll_name']?>"/>
-                <?php AjaxSubmitButton::begin([
-                    'label' => 'Vote',
-                    'ajaxOptions' => [
-                        'type'=>'POST',
-                        'url'=>'#',
-                        'success' => new \yii\web\JsExpression('function(data){
-                            $("body").html(data);
-                            }'),
-                    ],
-                    'options' => ['class' => 'customclass', 'type' => 'submit'],
-                    ]);
-                    AjaxSubmitButton::end();
-                ?>
-                
-               
-                <?php echo Html::endForm(); 
-            }
-    ?>
+    <?php
+    if ((
+            $isVote                     == false
+            && Yii::$app->user->getId() != null
+            && $_POST['pollStatus']     != 'show'
+        ) || ( $_POST['nameOfPoll']     == $pollData['poll_name']
+            && $_POST['pollStatus']     == 'vote'
+            && $_POST['pollStatus']     != 'show'
+            && Yii::$app->user->getId() != null
+    )) {
+   
+        echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
+        
+        echo Html::textInput('poll_id', $pollData['poll_id']);
+        echo Html::textInput('poll_name', $pollData['poll_name']);
+        
+        echo Html::activeRadioList($model,'voice',$answers);
+
+        AjaxSubmitButton::begin([
+            'label'         => 'Vote',
+            'ajaxOptions'   => [
+                'success' => new \yii\web\JsExpression('function(data){$("body").html(data);}'),
+                'type'    => 'POST',
+                'url'     => '#',
+            ],
+            'options'       => ['class' => 'customclass', 'type' => 'submit'],
+        ]);
+        AjaxSubmitButton::end();
+
+        echo Html::endForm(); 
+    } ?>
 
     <?php if(($isVote == false && $_POST['pollStatus']!='show') || (Yii::$app->user->getId()==null && $_POST['pollStatus']!='show') || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='vote'&& $_POST['pollStatus']!='show')){?>
         <form method="POST" action="" class="support_forms">
