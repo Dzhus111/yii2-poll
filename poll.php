@@ -4,6 +4,7 @@ namespace pollext\poll;
 
 use yii;
 use yii\base\Widget;
+use yii\db\Query;
 use yii\helpers\Html;
 
 class Poll extends Widget {
@@ -27,33 +28,64 @@ class Poll extends Widget {
         'maxLineWidth'         => 300,
     );
 
+    /**
+     * [setPollName description]
+     *
+     * @param [type] $name [description]
+     */
     public function setPollName($name)
     {
-
         $this->pollName = $name;
     }
-    
+
+    /**
+     * [setPollId description]
+     * 
+     * @param [type] $id [description]
+     */
+    public function setPollId($id)
+    {
+
+        $this->pollId = $id;
+    }
+
+    /**
+     * [getDbData description]
+     * 
+     * @return [type] [description]
+     */
     public function getDbData()
     {
+        $db = Yii::$app->db;
+
+        $command = $db
+            ->createCommand('SELECT * FROM poll WHERE poll_name=:pollName')
+            ->bindParam(':pollName',$this->pollName);
         
-            $db = Yii::$app->db;
-            
-            $command = $db->createCommand('SELECT * FROM poll WHERE poll_name=:pollName')->
-            bindParam(':pollName',$this->pollName);
-            
-            $this->pollData = $command->queryOne();
-            $this->answerOptionsData = unserialize($this->pollData['answer_options']);
+        $this->pollData = $command->queryOne();
+
+        $this->answerOptionsData = unserialize($this->pollData['answer_options']);
     }
-    
+
+    /**
+     * [setDbData description]
+     */
     private function setDbData()
     {
-        
-            $db = Yii::$app->db;
-            
-            $c = $db->createCommand()->insert('poll', [
-                'poll_name' => $this->pollName,
-                'answer_options' => $this->answerOptionsData
-            ])->execute();
+        Yii::$app->db->createCommand()->insert('poll', [
+            'answer_options' => $this->answerOptionsData,
+            'poll_name'      => $this->pollName,
+        ])->execute();
+
+
+
+        $query = new Query;
+        // compose the query
+        $id = $query->select('id')
+            ->from('poll')
+            ->limit(1)
+            ->one();
+        return $id['id'];
     }
     
     public function setParams($params)
@@ -70,7 +102,6 @@ class Poll extends Widget {
     
     public function init()
     {
-        
         parent::init();
         
         $pollDB = new PollDb;
@@ -85,27 +116,37 @@ class Poll extends Widget {
         }
 
         if(!$pollDB->isPollExist($this->pollName)){
-            $this->setDbData();
-            $pollDB->setVoicesData($this->pollName, $this->answerOptions);
+
+            $this->pollId = $this->setDbData()['id'];
+            $pollDB->setVoicesData($this->pollId, $this->answerOptions);
+        } else {
+
+            $this->setPollID($_POST['poll_id']);
         }
 
         if(Yii::$app->request->isAjax){
             if(isset($_POST['PollResponse'])){
-                if($_POST['poll_name']==$this->pollName){
-                   $pollDB->updateAnswers($this->pollName, $_POST['PollResponse']['voice'], 
-                    $this->answerOptions);
+
+                if($_POST['poll_id'] == $this->pollId){
+                    $pollDB->updateAnswers(
+                        $this->pollId,
+                        $_POST['PollResponse']['voice'],
+                        $this->answerOptions
+                    );
+
                     $pollDB->updateUsers($this->pollName);
                 }    
             }
-            
         }
+
         $this->getDbData();
 
-        $this->answers = $pollDB->getVoicesData($this->pollName);
+        $this->answers = $pollDB->getVoicesData($this->pollId);
         
-        for($i=0; $i<count($this->answers); $i++){
+        for ($i=0; $i<count($this->answers); $i++) {
              $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
         }
+
         $this->isVote = $pollDB->isVote($this->pollName);
     }
     

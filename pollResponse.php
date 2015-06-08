@@ -1,21 +1,18 @@
 <?php
-    namespace pollext\poll;
-    use yii\base\Model;
+
+namespace pollext\poll;
+
+use yii\base\Model;
     
-    class PollResponse extends Model{
+class PollResponse extends Model{
     public $voice;
     public $type;
     
-   public function attributeLabels()
+    public function attributeLabels()
     {
         return [
+            'type'  => '',
             'voice' => '',
-            'type' => ''
-            
         ];
     }
 }
-
-       
-
-?>
