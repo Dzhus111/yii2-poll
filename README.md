@@ -8,7 +8,7 @@ The Poll widget for the Yii2 framework allows you to create custom poll for auth
 Installing 
 ==========
 
-php composer.phar require --prefer-dist davidjeddy/pollext "*"
+php composer.phar require --prefer-dist davidjeddy/yii2-pollext "*"
 
 That's all. The widget uses mysql database. But you do not need to create the tables. The widget itself will create all the necessary tables in your database when and as needed.
 
@@ -17,7 +17,7 @@ Usage
 
 At first, import widget classes in view file where you want create poll
 
-use pollext\poll\Poll;
+use davidjeddy\poll\Poll;
 
 Then invoke the widget and specify the name of the poll and the response options
 
@@ -50,4 +50,4 @@ That's all. You will see poll with standard parameters. But you can set your par
     
 So, now you can fast and easy create the poll
 
-If you want to change the styles for the poll form, you can do it directly in the view file of poll widget in apps\basic\vendor\yiisoft\yii2-poll\views\index.php
+If you want to change the styles for the poll form, you can do it directly in the view file of poll widget in @apps\vendor\davidjeddy\yii2-poll\views\index.php
