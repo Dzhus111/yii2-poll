@@ -1,5 +1,5 @@
 {
-    "name": "pollext/poll",
+    "name": "davidjeddy/yii2-poll",
     "description": "Widget to create custom polls for Yii 2.0 framework",
     "keywords": ["yii2", "poll", "widget", "poll-widget", "yii2-poll-widget"],
     "type": "yii2-extension",
@@ -18,11 +18,5 @@
             "name": "David Eddy",
             "email": "me@davidjeddy.com"
         }
-    ],
-    "require": {
-        "yiisoft/yii2": "*"
-    },
-    "autoload": {
-        "psr-4": { "pollext\\poll\\": "" }
-    }
+    ]
 }
